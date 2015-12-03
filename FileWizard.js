@@ -1,6 +1,11 @@
 
 	
-	function FileWizard(element,options, headers){
+	function FileWizard(element, options, headers){
+		/*
+		if( !(this instanceof FileUploader)){
+			return new FileUploader(options, header);
+		}
+		*/
 		this.$element = $(element);
 		this.settings = $.extend({},FileWizard.DEFAULTS, options);
 		this.headers = $.extend({},FileWizard.HEADERS, headers);
@@ -14,16 +19,23 @@
 		drop: function(){},
 		dragenter:function(){},
 		dragleave: function(){},
+		rejected: function(){}
 
 		paramName: 'files',
 		url:'',
 		method:'POST',
 
-		autoSend: false
+		autoSend: false,
+		acceptedFiles: 'image/*',
+		maxSize: 5
 		
 	};
 
 	FileWizard.HEADERS = {};
+
+	FileWizard.sizeToMB = function(b){
+		return b/1024/1024;
+	}
 
 	var methods = {
 		addData: function(key, value){
@@ -45,12 +57,29 @@
 		getFiles: function(){
 			return this.files;
 		},
-		removeFile: function(i){
-			this.files.splice(i,1);
+		removeFile: function(i,range){
+			range = range ? range : 1;
+			this.files.splice(i, range);
 			return this;
 		},
 		setOptions: function(options){
 			$.extend(this.settings,options)
+			return this;
+		},
+		send: function(){
+			this.addData.apply(this,arguments);	
+			
+			for(var i in this.files){
+				var paramName = this.files.length > 1 ? this.settings.paramName + '[]' : this.settings.paramName;
+				this.addData(paramName, this.files[i]);	
+
+			}
+			
+			this.fileUploader = new FileUploader(this.settings, this.headers);
+			return this;
+		},
+		abort: function(){
+			this.fileUploader.abort();
 			return this;
 		},
 		init: function(){
@@ -72,18 +101,26 @@
 						e.preventDefault();
 						fw.settings.dragover.call(this,e);
 					},
-					drop: function(e){
+					drop: function(_e){
+						e = _e.originalEvent;
 						e.stopPropagation();
 						e.preventDefault();
 
-						if(e.originalEvent.dataTransfer.types.indexOf('Files') > -1){
-							var _files = e.originalEvent.dataTransfer.files;
+						if(e.dataTransfer.types.indexOf('Files') > -1){
+							var _files = e.dataTransfer.files;
 							for(var i =0 ; i < _files.length ; i++ ){
-								fw.files.push(_files[i]);
+
+								if( FileWizard.sizeToMB(_files[i].size) > fw.settings.maxSize   )
+									fw.settings.rejected.call(this, _files[i],'file_limit', e)
+								if( !_files[i].type.match(fw.settings.acceptedFiles) )
+									fw.settings.rejected.call(this, _files[i],'file_type', e)
+								else
+									fw.files.push(_files[i]);
 							}
 								
 							fw.settings.drop.call(this,e);
-						}
+						}else
+							fw.settings.rejected.call(this,null,'not_file' ,e);
 						
 					}
 				});
@@ -91,24 +128,9 @@
 			});
 
 			return this;
-		}, //end init
+		} //end init
 
-		send: function(){
-			this.addData.apply(this,arguments);	
-			
-			for(var i in this.files){
-				var paramName = this.files.length > 1 ? this.settings.paramName + '[]' : this.settings.paramName;
-				this.addData(paramName, this.files[i]);	
-
-			}
-			
-			this.fileUploader = new FileUploader(this.settings, this.headers);
-			return this;
-		},
-		abort: function(){
-			this.fileUploader.abort();
-			return this;
-		}
+		
 	}
 
 	$.extend(FileWizard.prototype, methods);
