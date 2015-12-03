@@ -1,5 +1,5 @@
 
-	
+	var counter = 1;
 	function FileWizard(element, options, headers){
 		/*
 		if( !(this instanceof FileUploader)){
@@ -19,12 +19,14 @@
 		drop: function(){},
 		dragenter:function(){},
 		dragleave: function(){},
-		rejected: function(){}
+		rejected: function(){},
+		fileAdded: function(){},
 
 		paramName: 'files',
 		url:'',
 		method:'POST',
 
+		clickable: true,
 		autoSend: false,
 		acceptedFiles: 'image/*',
 		maxSize: 5
@@ -56,6 +58,22 @@
 		},
 		getFiles: function(){
 			return this.files;
+		},
+		addFiles: function(files){
+			fw = this;
+			for(var i =0 ; i < files.length ; i++ ){
+
+				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   )
+					fw.settings.rejected.call(this, files[i],'file_limit', e)
+				if( !files[i].type.match(fw.settings.acceptedFiles) )
+					fw.settings.rejected.call(this, files[i],'file_type', e)
+				else{
+					fw.files.push(files[i]);
+					fw.settings.fileAdded.call(this, files[i]);
+				}
+			}
+				
+			return this;
 		},
 		removeFile: function(i,range){
 			range = range ? range : 1;
@@ -107,18 +125,9 @@
 						e.preventDefault();
 
 						if(e.dataTransfer.types.indexOf('Files') > -1){
-							var _files = e.dataTransfer.files;
-							for(var i =0 ; i < _files.length ; i++ ){
-
-								if( FileWizard.sizeToMB(_files[i].size) > fw.settings.maxSize   )
-									fw.settings.rejected.call(this, _files[i],'file_limit', e)
-								if( !_files[i].type.match(fw.settings.acceptedFiles) )
-									fw.settings.rejected.call(this, _files[i],'file_type', e)
-								else
-									fw.files.push(_files[i]);
-							}
-								
-							fw.settings.drop.call(this,e);
+							files = e.dataTransfer.files;
+							fw.addFiles(files);
+							fw.settings.drop.call(this,e, files);
 						}else
 							fw.settings.rejected.call(this,null,'not_file' ,e);
 						
@@ -127,9 +136,32 @@
 
 			});
 
-			return this;
-		} //end init
+			if(fw.settings.clickable)
+				this.initForm();
 
+			
+
+			return this;
+		}, //end init
+
+		initForm: function(){
+			var input = document.createElement('input'),
+			 	fw = this;
+			$(input).attr({
+				type: 'file',
+				class: 'filewizard-input filewizard-input-' + counter
+			}).on('change', function(e){
+				fw.addFiles(this.files);
+			});
+
+			this.$element.on('click', function(e){
+				e.preventDefault();
+				$(input).trigger('click');
+			});
+			
+			$('body').append(input);
+			counter++;
+		}
 		
 	}
 
