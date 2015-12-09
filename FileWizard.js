@@ -1,4 +1,5 @@
-
+(function(){
+	
 	var counter = 1;
 	function FileWizard(element, options, headers){
 		/*
@@ -166,6 +167,6 @@
 	}
 
 	$.extend(FileWizard.prototype, methods);
-
+})();
 
 
