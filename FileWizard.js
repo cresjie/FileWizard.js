@@ -1,3 +1,11 @@
+/**
+ * Plugin: FileWizard
+ * Author: Cres Jie Labasano
+ * Email: cresjie@gmail.com
+ * Github: http://github.com/cresjie
+ * 
+ * /
+
 (function(){
 	
 	var counter = 1;
