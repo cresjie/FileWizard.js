@@ -30,7 +30,8 @@
 		clickable: true,
 		autoSend: false,
 		acceptedFiles: 'image/*',
-		maxSize: 5
+		maxSize: 5,
+		multipleFile: true
 		
 	};
 
@@ -55,6 +56,10 @@
 			}
 			
 
+			return this;
+		},
+		resetFiles: function(){
+			this.files = [];
 			return this;
 		},
 		getFiles: function(){
