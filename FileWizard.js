@@ -181,6 +181,7 @@
 	}
 
 	$.extend(FileWizard.prototype, methods);
+	window.FileWizard = FileWizard;
 })();
 
 
