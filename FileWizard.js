@@ -31,7 +31,7 @@
 		autoSend: false,
 		acceptedFiles: 'image/*',
 		maxSize: 5,
-		multipleFile: true
+		multipleFiles: true
 		
 	};
 
@@ -67,7 +67,8 @@
 		},
 		addFiles: function(files){
 			fw = this;
-			for(var i =0 ; i < files.length ; i++ ){
+			length = fw.setttings.multipleFiles ? files.length : 0;
+			for(var i =0 ; i < length ; i++ ){
 
 				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   )
 					fw.settings.rejected.call(this, files[i],'file_limit', e)
