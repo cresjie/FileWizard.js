@@ -4,7 +4,7 @@
  * Email: cresjie@gmail.com
  * Github: http://github.com/cresjie
  * 
- * /
+ */
 
 (function(){
 	
