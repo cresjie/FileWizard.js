@@ -10,6 +10,6 @@ drag and drop upload files
  - element <sub>| String[selector], jQuery, DOM</sub>
  - options <sub>| Object</sub>
  - headers <sub>| Object</sub>
- - 
+ 
 [1]: http://jquery.com/
 [2]: https://github.com/cresjie/FileUploader.js
