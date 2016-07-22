@@ -75,8 +75,10 @@
 		},
 		addFiles: function(files){
 			fw = this;
-			length = fw.settings.multipleFiles ? files.length : 0;
-			for(var i =0 ; i < length ; i++ ){
+			if(!fw.settings.multipleFiles)
+				fw.resetFiles();
+
+			for(var i =0 ; i < files.length ; i++ ){
 
 				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   )
 					fw.settings.rejected.call(this, files[i],'file_limit', e)
