@@ -165,7 +165,7 @@
 			$(input).attr({
 				type: 'file',
 				class: 'filewizard-input filewizard-input-' + counter
-			}).on('change', function(e){
+			}).css('display','none').on('change', function(e){
 				fw.addFiles(this.files);
 			});
 
