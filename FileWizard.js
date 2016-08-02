@@ -81,9 +81,9 @@
 			for(var i =0 ; i < files.length ; i++ ){
 
 				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   )
-					fw.settings.rejected.call(this, files[i],'file_limit', e)
-				if( !files[i].type.match(fw.settings.acceptedFiles) )
-					fw.settings.rejected.call(this, files[i],'file_type', e)
+					fw.settings.rejected.call(this, files[i],'file_limit')
+				else if( !files[i].type.match(fw.settings.acceptedFiles) )
+					fw.settings.rejected.call(this, files[i],'file_type')
 				else{
 					fw.files.push(files[i]);
 					fw.settings.fileAdded.call(this, files[i]);
