@@ -28,7 +28,17 @@
 		drop: function(){},
 		dragenter:function(){},
 		dragleave: function(){},
-		rejected: function(){},
+		rejected: function(file, errorType){
+			switch(errorType) {
+				case 'file_limit':
+					alert('exceed maximum file size');
+					break;
+				case 'file_type':
+					alert('Invalid file type');
+					break;
+			}
+			
+		},
 		fileAdded: function(){},
 
 		paramName: 'files',
