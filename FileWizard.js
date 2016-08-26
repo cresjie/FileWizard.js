@@ -5,8 +5,7 @@
  * Github: http://github.com/cresjie
  * 
  */
-
-(function(){
+(function(window){
 	
 	var counter = 1;
 	function FileWizard(element, options, headers){
@@ -28,16 +27,16 @@
 		drop: function(){},
 		dragenter:function(){},
 		dragleave: function(){},
-		rejected: function(file, errorType){
-			switch(errorType) {
+		rejected: function(file, error){
+			switch(error) {
 				case 'file_limit':
-					alert('exceed maximum file size');
+					alert('File exceeds file limit');
 					break;
+
 				case 'file_type':
-					alert('Invalid file type');
-					break;
+					alert('file type not allowed');
+					break;	
 			}
-			
 		},
 		fileAdded: function(){},
 
@@ -76,23 +75,22 @@
 
 			return this;
 		},
-		resetFiles: function(){
-			this.files = [];
-			return this;
-		},
 		getFiles: function(){
 			return this.files;
 		},
+		resetFiles:function(){
+			this.files = [];
+			this.input.value = null;
+			return this;
+		},
 		addFiles: function(files){
-			fw = this;
-			if(!fw.settings.multipleFiles)
-				fw.resetFiles();
-
-			for(var i =0 ; i < files.length ; i++ ){
+			var fw = this; 
+			limit = fw.settings.multipleFiles ? files.length : 1;
+			for(var i =0 ; i < limit ; i++ ){
 
 				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   )
 					fw.settings.rejected.call(this, files[i],'file_limit')
-				else if( !files[i].type.match(fw.settings.acceptedFiles) )
+				if( !files[i].type.match(fw.settings.acceptedFiles) )
 					fw.settings.rejected.call(this, files[i],'file_type')
 				else{
 					fw.files.push(files[i]);
@@ -124,11 +122,12 @@
 			return this;
 		},
 		abort: function(){
-			this.fileUploader.abort();
+			if( this.fileUploader )
+				this.fileUploader.abort();
 			return this;
 		},
 		init: function(){
-			fw = this;
+			var fw = this; 
 			this.$element.each(function(i, el){
 
 				$(el).on({
@@ -150,11 +149,12 @@
 						e = _e.originalEvent;
 						e.stopPropagation();
 						e.preventDefault();
+						$(this).removeClass('filewizard-dragenter');
 
 						if(e.dataTransfer.types.indexOf('Files') > -1){
 							files = e.dataTransfer.files;
+							fw.settings.drop.call(this,e, files); console.log(fw.settings.url);
 							fw.addFiles(files);
-							fw.settings.drop.call(this,e, files);
 						}else
 							fw.settings.rejected.call(this,null,'not_file' ,e);
 						
@@ -172,9 +172,10 @@
 		}, //end init
 
 		initForm: function(){
-			var input = document.createElement('input'),
-			 	fw = this;
-			$(input).attr({
+			var fw = this;
+				fw.input = document.createElement('input');
+			 	
+			$(fw.input).attr({
 				type: 'file',
 				class: 'filewizard-input filewizard-input-' + counter
 			}).css('display','none').on('change', function(e){
@@ -183,17 +184,46 @@
 
 			this.$element.on('click', function(e){
 				e.preventDefault();
-				$(input).trigger('click');
+				$(fw.input).trigger('click');
 			});
 			
-			$('body').append(input);
+			$('body').append(fw.input);
 			counter++;
+		},
+		getSettings: function(){
+			return this.settings;
 		}
 		
 	}
 
 	$.extend(FileWizard.prototype, methods);
-	window.FileWizard = FileWizard;
-})();
+
+	// PLUGIN DEFINITION
+  	// ==========================
+  	function Plugin(options, headers){
+  		
+  		var arg = [];
+  		if(arguments.length > 1){
+  			for(var i in arguments)
+  				arg.push(arguments[i]);
+  		}
+		var $this = $(this),
+			data = $this.data('FileWizard');
+		if( !data ){
+			$this.data('FileWizard',new FileWizard($this, options, headers) );
+			return $this;
+		}
+		else{
+			if(data[options]){
+				return data[options].apply(data, arg.splice(1,1));
+			}
+		}
+  		
+  	}
+  	$.fn.FileWizard = Plugin;
+  	$.fn.FileWizard.Constructor = FileWizard;
+	window.FileWizard =FileWizard;
+	
+})(window);
 
 
