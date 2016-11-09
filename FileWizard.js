@@ -88,11 +88,11 @@
 			limit = fw.settings.multipleFiles ? files.length : 1;
 			for(var i =0 ; i < limit ; i++ ){
 
-				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   )
+				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   ){
 					fw.settings.rejected.call(this, files[i],'file_limit')
-				if( !files[i].type.match(fw.settings.acceptedFiles) )
+				} else if( !files[i].type.match(fw.settings.acceptedFiles) ) {
 					fw.settings.rejected.call(this, files[i],'file_type')
-				else{
+				} else {
 					fw.files.push(files[i]);
 					fw.settings.fileAdded.call(this, files[i]);
 				}
@@ -225,5 +225,7 @@
 	window.FileWizard =FileWizard;
 	
 })(window);
+
+
 
 
