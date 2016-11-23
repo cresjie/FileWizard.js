@@ -7,7 +7,8 @@
  */
 (function(window){
 	
-	var counter = 1;
+	var counter = 1,
+		fn = function(){};
 	function FileWizard(element, options, headers){
 		/*
 		if( !(this instanceof FileUploader)){
@@ -23,10 +24,10 @@
 	}
 
 	FileWizard.DEFAULTS = {
-		dragover:function(){},
-		drop: function(){},
-		dragenter:function(){},
-		dragleave: function(){},
+		dragover: fn,
+		drop: fn,
+		dragenter:fn,
+		dragleave: fn,
 		rejected: function(file, error){
 			switch(error) {
 				case 'file_limit':
@@ -38,8 +39,8 @@
 					break;	
 			}
 		},
-		fileAdded: function(){},
-
+		fileAdded: fn,
+		fileRemoved: fn
 		paramName: 'files',
 		url:'',
 		method:'POST',
@@ -79,8 +80,19 @@
 			return this.files;
 		},
 		resetFiles:function(){
+			/**
+			* Clone the files
+			*/
+			var files = this.files.slice();
+
 			this.files = [];
 			this.input.value = null;
+
+			/**
+			 * Trigger fileRemoved
+			 */
+			 this.settings.fileRemoved.call(this, files);
+
 			return this;
 		},
 		addFiles: function(files){
@@ -102,7 +114,8 @@
 		},
 		removeFile: function(i,range){
 			range = range ? range : 1;
-			this.files.splice(i, range);
+			var files = this.files.splice(i, range);
+			this.settings.fileRemoved.call(this, files);
 			return this;
 		},
 		setOptions: function(options){
@@ -153,7 +166,7 @@
 
 						if(e.dataTransfer.types.indexOf('Files') > -1){
 							files = e.dataTransfer.files;
-							fw.settings.drop.call(this,e, files); console.log(fw.settings.url);
+							fw.settings.drop.call(this,e, files);
 							fw.addFiles(files);
 						}else
 							fw.settings.rejected.call(this,null,'not_file' ,e);
