@@ -14,11 +14,11 @@ drag and drop upload files
  - headers <sub>| Object</sub>
  
  # Options
- - **dragover** <sub>Function</sub>
+- **dragover** <sub>Function</sub>
     - mouse event drag over the element
- - **drop** <sub>Function</sub>
+- **drop** <sub>Function</sub>
     - on drop item event
- - **dragenter** <sub>Function</sub>
+- **dragenter** <sub>Function</sub>
     - dragenter mouse event
 - **rejected** <sub>Function(file,error)</sub>
     - callback if the file is rejected (e.g file_limit, file_type)
