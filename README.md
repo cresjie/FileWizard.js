@@ -51,7 +51,7 @@ drag and drop upload files
     - add files to the list
 - **removeFile** <sub>Function(index, range)</sub>
     - remove file(s) in the list
-- **setOptions** <sub>Object</sub>
+- **setOptions** <sub>Function(Object option)</sub>
     - set the options of the file wizard
 - **send** 
     - send the data/files to the url specified
