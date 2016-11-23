@@ -1,7 +1,7 @@
 # FileWizard.js
 drag and drop upload files
-- FileWizard.min.js - is the minified version of the filewizard
-- FileWizard-bundle.min.js - is the compile minification of fileuploader and fileward, so you dont need to download the FileUploader.js
+- **FileWizard.min.js** - is the minified version of the filewizard
+- **FileWizard-bundle.min.js** - is the compile minification of fileuploader and fileward, so you dont need to download the FileUploader.js
 
 # Requirement(s)
 * [jQuery][1]
