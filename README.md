@@ -3,6 +3,10 @@ drag and drop upload files
 - **FileWizard.min.js** - is the minified version of the filewizard
 - **FileWizard-bundle.min.js** - is the compile minification of fileuploader and fileward, so you dont need to download the FileUploader.js
 
+# Installation via Bower
+```{r, engine='bash', count_lines}
+bower install filewizard.js --save
+```
 # Requirement(s)
 * [jQuery][1]
 * [FileUploader][2]
