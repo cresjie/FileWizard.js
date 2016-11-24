@@ -97,7 +97,7 @@
 		},
 		addFiles: function(files){
 			var fw = this; 
-			limit = fw.settings.multipleFiles ? files.length : 1;
+			limit = fw.settings.multipleFiles ? files.length : (files.length ? 1 : 0);
 			for(var i =0 ; i < limit ; i++ ){
 
 				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   ){
@@ -112,7 +112,12 @@
 					}
 				}
 
-				fw.files.push(files[i]);
+				if(fw.settings.multipleFiles) {
+					fw.files.push(files[i]);
+				} else {
+					fw.files[0] = files[i];
+				}
+				
 				fw.settings.fileAdded.call(this, files[i]);
 				
 			}
