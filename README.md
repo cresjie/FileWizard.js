@@ -24,6 +24,8 @@ drag and drop upload files
     - callback if the file is rejected (e.g file_limit, file_type)
 - **fileAdded** <sub>Function(file)</sub>
     - event callback if the file is successfully added to the list
+- **fileRemoved** <sub>Function(Array files)</sub>
+    - trigger when file(s) is/are removed
 - **paramName** <sub>String| default: files</sub>
     - paramater name for the file
 - **url** <sub>String| required</sub>
@@ -32,8 +34,8 @@ drag and drop upload files
    - http method to use in the request
 - **clickable** <sub>Boolean| default: true</sub>
     - opens window file browser if the element is clicked
-- **acceptedFiles** <sub>String | default: image/*</sub>
-    - accepted mime types
+- **acceptedFiles** <sub>Array | default: ['jpg','jpeg','png','gif']</sub>
+    - accepted file extension 
 - **maxSize** <sub>Integer | default: 5</sub>
     - maximum size of the file in MB
 - **multipleFiles** <sub>Boolean | default: true</sub>
@@ -41,8 +43,9 @@ drag and drop upload files
 - **see also FileUploader js** for additional options
 
 # Methods
-- **addData** <sub>Function(key, value)</sub>
-    - add data paramater to the request in a key-value pair
+- **addData** <sub>Function(key, value) or Function(Object)</sub>
+    - add data paramater to the request in a key-value pair. 
+    e.g fw.addData({x: 0, y: 0, width: 300, height: 300}); //data parameter for the image to be cropped
 - **getFiles** 
     - returns files
 - **resetFiles**
@@ -53,8 +56,8 @@ drag and drop upload files
     - remove file(s) in the list
 - **setOptions** <sub>Function(Object option)</sub>
     - set the options of the file wizard
-- **send** 
-    - send the data/files to the url specified
+- **send** <sub>Function(Object data) *optional</sub>
+    - send the data/files to the url specified, optional additional data parameters can be added before send
 - **abort**
     - cancel's the request if the request is still sending
 
