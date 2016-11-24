@@ -40,14 +40,14 @@
 			}
 		},
 		fileAdded: fn,
-		fileRemoved: fn
+		fileRemoved: fn,
 		paramName: 'files',
 		url:'',
 		method:'POST',
 
 		clickable: true,
 		autoSend: false,
-		acceptedFiles: 'image/*',
+		acceptedFiles: ['jpg','jpeg','png','gif'],
 		maxSize: 5,
 		multipleFiles: true
 		
@@ -101,13 +101,20 @@
 			for(var i =0 ; i < limit ; i++ ){
 
 				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   ){
-					fw.settings.rejected.call(this, files[i],'file_limit')
-				} else if( !files[i].type.match(fw.settings.acceptedFiles) ) {
-					fw.settings.rejected.call(this, files[i],'file_type')
-				} else {
-					fw.files.push(files[i]);
-					fw.settings.fileAdded.call(this, files[i]);
+					return fw.settings.rejected.call(this, files[i],'file_limit')
 				}
+				
+				var acceptedFiles = fw.settings.acceptedFiles;
+				if(acceptedFiles.length) {
+					var ext = files[i].name.split('.')[1];
+					if(acceptedFiles.indexOf(ext) < 0 ) {
+						return fw.settings.rejected.call(this, files[i],'file_type');
+					}
+				}
+
+				fw.files.push(files[i]);
+				fw.settings.fileAdded.call(this, files[i]);
+				
 			}
 				
 			return this;
