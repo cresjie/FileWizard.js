@@ -106,7 +106,7 @@
 				
 				var acceptedFiles = fw.settings.acceptedFiles;
 				if(acceptedFiles.length) {
-					var ext = files[i].name.split('.')[1];
+					var ext = files[i].name.split('.')[1].toLowerCase();
 					if(acceptedFiles.indexOf(ext) < 0 ) {
 						return fw.settings.rejected.call(this, files[i],'file_type');
 					}
