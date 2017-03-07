@@ -181,8 +181,11 @@
 							files = e.dataTransfer.files;
 							fw.settings.drop.call(this,e, files);
 							fw.addFiles(files);
-						}else
+						}else{
 							fw.settings.rejected.call(this,null,'not_file' ,e);
+						}
+						
+						this.value = '';	
 						
 					}
 				});
@@ -203,9 +206,11 @@
 			 	
 			$(fw.input).attr({
 				type: 'file',
+				multiple: fw.settings.multipleFiles,
 				class: 'filewizard-input filewizard-input-' + counter
 			}).css('display','none').on('change', function(e){
 				fw.addFiles(this.files);
+				this.value = '';
 			});
 
 			this.$element.on('click', function(e){
