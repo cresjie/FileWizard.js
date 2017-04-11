@@ -13,7 +13,7 @@ bower install filewizard.js --save
 
 # Constructor
 - **FileWizard(element, options, headers)**
- - element <sub>| String[selector], jQuery, DOM</sub>
+ - element <sub>| String[selector], jQuery element, DOM</sub>
  - options <sub>| Object</sub>
  - headers <sub>| Object</sub>
  
@@ -44,6 +44,8 @@ bower install filewizard.js --save
     - maximum size of the file in MB
 - **multipleFiles** <sub>Boolean | default: true</sub>
     - upload multiple file in one request
+- **beforeSubmit** <sub>Function(response, event)</sub>
+    - triggers before the request is submitted
 - **see also FileUploader js** for additional options
 
 # Methods
@@ -62,8 +64,10 @@ bower install filewizard.js --save
     - set the options of the file wizard
 - **send** <sub>Function(Object data) *optional</sub>
     - send the data/files to the url specified, optional additional data parameters can be added before send
-- **abort**
-    - cancel's the request if the request is still sending
+- **abort** <sub>Integer | default: 0</sub>
+    - cancel's the request at the specific index
+- **abortAll**
+    - cancel all the ongoing request
 
  
 [1]: http://jquery.com/
