@@ -9,7 +9,7 @@ bower install filewizard.js --save
 ```
 # Requirement(s)
 * [jQuery][1]
-* [FileUploader][2]
+* [FileUploader][2] <sub>(already included in the **FileWizard-bundle.min.js**)</sub>
 
 # Constructor
 - **FileWizard(element, options, headers)**
