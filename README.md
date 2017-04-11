@@ -44,7 +44,7 @@ bower install filewizard.js --save
     - maximum size of the file in MB
 - **multipleFiles** <sub>Boolean | default: true</sub>
     - upload multiple file in one request
-- **beforeSubmit** <sub>Function(response, event)</sub>
+- **beforeSubmit** <sub>Function(settings, Array|File file(s) )</sub>
     - triggers before the request is submitted
 - **see also FileUploader js** for additional options
 
