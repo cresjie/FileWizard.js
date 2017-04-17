@@ -53,6 +53,7 @@
 		success: fn,
 
 		fileAdded: fn,
+		filesAdded: fn,
 		fileRemoved: fn,
 		paramName: 'files',
 		url:'',
@@ -124,7 +125,8 @@
 		 */
 		addFiles: function(files){
 			var fw = this; 
-			limit = fw.settings.multipleFiles ? files.length : (files.length ? 1 : 0);
+			limit = fw.settings.multipleFiles ? files.length : (files.length ? 1 : 0),
+				addedFiles = [];
 
 			/**
 			 * Loop each files for checking
@@ -165,10 +167,14 @@
 					fw.files[0] = files[i];
 				}
 				
+				addedFiles.push(files[i]);
+
 				fw.settings.fileAdded.call(this, files[i]);
 				
 			}
-				
+			
+			fw.settings.filesAdded.call(this, addedFiles);
+
 			return this;
 		},
 		removeFile: function(i,range){
@@ -191,27 +197,29 @@
 		send: function(){
 			
 
-			fw.addData.apply(fw,arguments);	
+			this.addData.apply(this,arguments);	
 
 			var fw = this,
 				files = fw.files,
-				settings = $.extend({},fw.settings),
-				successFn = settings.success,
-				completeFn = settings.complete ;
+				progressFn = fw.settings.progress;
+				successFn = fw.settings.success,
+				completeFn = fw.settings.complete,
+				errorFn = fw.settings.error ;
 
 			/**
 			 * Parallel uploading technique
 			 */
 
-			if(settings.parallel_upload) {
+			if(fw.settings.parallel_upload) {
 				
 				var uploadFile = function(){
-
+						
 						/**
 						 * check if there's still pending files
 						 */
-						if(files.length()) {
-							var file = files.shift(),
+						if(files.length) {
+							var settings = $.extend({},fw.settings),
+								file = files.shift(),
 								fileUploader = null;
 
 								settings.data.append(paramName, file);
@@ -223,7 +231,7 @@
 								 */
 								settings.complete = function(response, e){
 									
-									completeFn.call(fw, response, e);
+									completeFn.call(fw, response, e, file);
 									
 									/**
 									 * remove uploader from the queue
@@ -241,7 +249,7 @@
 								 * inorder to remove a file from the list
 								 */
 								settings.success = function(response, e){
-									successFn.call(fw, response, e);
+									successFn.call(fw, response, e, file);
 
 									/**
 									 * Remove file from the file listing
@@ -252,6 +260,16 @@
 									}
 								}
 
+								settings.error = function(response, e){
+									errorFn.call(this, response, e, file);
+								}
+								
+								
+
+								settings.progress = function(percent, e){
+									progressFn.call(this,percent,e, file, fw, fileUploader);
+								}
+								
 								/**
 								 *
 								 * Trigger beforeSubmit event
@@ -266,7 +284,9 @@
 				/**
 				 * Loop by the amount of parallel files allowed
 				 */
-				for(var i = 0; i < settings.parallel_files; i++) {
+				 var loop = fw.settings.parallel_files > this.queue.length ? fw.settings.parallel_files - this.queue.length : 0 ;
+
+				for( var i = 0; i < loop; i++) {
 					uploadFile();
 				}
 
@@ -283,7 +303,8 @@
 
 				}
 
-				var fileUploader = null;
+				var settings = $.extend({},fw.settings),
+					fileUploader = null;
 
 				/**
 				 * override complete event
@@ -312,6 +333,8 @@
 					 */
 					files.splice(0, files.length);
 				}
+
+
 
 				/**
 				 *
@@ -353,7 +376,7 @@
 			/**
 			 * add a queue in the list
 			 */
-			this.queue.push(queue);
+			this.queue.push(queue); 
 
 			return this;
 		},
@@ -387,11 +410,12 @@
 						}	
 					},
 					dragleave: function(e){
-						$(this).removeClass('filewizard-dragenter');
+						$(this).removeClass('filewizard-dragenter filewizard-dragover');
 						fw.settings.dragleave.call(this, e);
 					},
 					dragover: function(e){
 						e.preventDefault();
+						$(this).addClass('filewizard-dragover');
 						fw.settings.dragover.call(this,e);
 					},
 					drop: function(_e){
@@ -456,7 +480,7 @@
 			$('body').append(fw.input);
 			counter++;
 		},
-		getSettings: function(){
+		getOptions: function(){
 			return this.settings;
 		}
 		

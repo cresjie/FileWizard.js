@@ -1,5 +1,6 @@
 # FileWizard.js
-drag and drop upload files
+    Light JS Library for drag and drop upload files. Provides skeletal support to your file upload.
+    You can easily create your theme by just attaching in the triggered events, especially: "progress" event for detecting upload percent 
 - **FileWizard.min.js** - is the minified version of the filewizard
 - **FileWizard-bundle.min.js** - is the compile minification of fileuploader and fileward, so you dont need to download the FileUploader.js
 
