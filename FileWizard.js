@@ -63,6 +63,7 @@
 		parallel_files: 3,
 
 		clickable: true,
+		draggable: true,
 		autoSend: false,
 		acceptedFiles: ['jpg','jpeg','png','gif'],
 		maxSize: 5,
@@ -367,7 +368,9 @@
 			/**
 			 * abort all queues
 			 */
-			this.queue.forEach( queue => queue.abort() );
+			this.queue.forEach( function(queue) {
+				queue.abort()
+			});
 			this.queue = [];
 
 			return this;
@@ -402,40 +405,43 @@
 				/**
 				 * add dragging events to the element
 				 */
-				$(el).on({
-					dragenter: function(e){
-						if(e.originalEvent.dataTransfer.types.indexOf('Files') > -1){
-							$(this).addClass('filewizard-dragenter');
-							fw.settings.dragenter.call(this, e);
-						}	
-					},
-					dragleave: function(e){
-						$(this).removeClass('filewizard-dragenter filewizard-dragover');
-						fw.settings.dragleave.call(this, e);
-					},
-					dragover: function(e){
-						e.preventDefault();
-						$(this).addClass('filewizard-dragover');
-						fw.settings.dragover.call(this,e);
-					},
-					drop: function(_e){
-						e = _e.originalEvent;
-						e.stopPropagation();
-						e.preventDefault();
-						$(this).removeClass('filewizard-dragenter');
+				if(fw.settings.draggable) {
+					$(el).on({
+						dragenter: function(e){
+							if(e.originalEvent.dataTransfer.types.indexOf('Files') > -1){
+								$(this).addClass('filewizard-dragenter');
+								fw.settings.dragenter.call(this, e);
+							}	
+						},
+						dragleave: function(e){
+							$(this).removeClass('filewizard-dragenter filewizard-dragover');
+							fw.settings.dragleave.call(this, e);
+						},
+						dragover: function(e){
+							e.preventDefault();
+							$(this).addClass('filewizard-dragover');
+							fw.settings.dragover.call(this,e);
+						},
+						drop: function(_e){
+							e = _e.originalEvent;
+							e.stopPropagation();
+							e.preventDefault();
+							$(this).removeClass('filewizard-dragenter');
 
-						if(e.dataTransfer.types.indexOf('Files') > -1){
-							files = e.dataTransfer.files;
-							fw.settings.drop.call(this,e, files);
-							fw.addFiles(files);
-						}else{
-							fw.settings.rejected.call(this,null,'not_file' ,e);
+							if(e.dataTransfer.types.indexOf('Files') > -1){
+								files = e.dataTransfer.files;
+								fw.settings.drop.call(this,e, files);
+								fw.addFiles(files);
+							}else{
+								fw.settings.rejected.call(this,null,'not_file' ,e);
+							}
+							
+							this.value = '';	
+							
 						}
-						
-						this.value = '';	
-						
-					}
-				});
+					});
+				}
+					
 
 			});
 
