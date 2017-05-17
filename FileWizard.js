@@ -223,7 +223,7 @@
 								file = files.shift(),
 								fileUploader = null;
 
-								settings.data.append(paramName, file);
+								settings.data.append(fw.settings.paramName, file);
 
 								/**
 								 * override complete event
@@ -299,7 +299,7 @@
 			} else{
 
 				for(var i in files){
-					var paramName = files.length > 1 ? settings.paramName + '[]' : settings.paramName;
+					var paramName = files.length > 1 ? fw.settings.paramName + '[]' : fw.settings.paramName;
 					fw.addData(paramName, files[i]);	
 
 				}
@@ -426,7 +426,7 @@
 							e = _e.originalEvent;
 							e.stopPropagation();
 							e.preventDefault();
-							$(this).removeClass('filewizard-dragenter');
+							$(this).removeClass('filewizard-dragenter filewizard-dragover');
 
 							if(e.dataTransfer.types.indexOf('Files') > -1){
 								files = e.dataTransfer.files;
