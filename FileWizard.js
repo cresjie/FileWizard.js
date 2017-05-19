@@ -51,6 +51,7 @@
 		beforeSubmit: fn,
 		complete: fn,
 		success: fn,
+		error: fn,
 
 		fileAdded: fn,
 		filesAdded: fn,
