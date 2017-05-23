@@ -202,7 +202,8 @@
 			this.addData.apply(this,arguments);	
 
 			var fw = this,
-				files = fw.files,
+				settings = $.extend({},fw.settings),
+				files = fw.files.slice(0),
 				progressFn = fw.settings.progress;
 				successFn = fw.settings.success,
 				completeFn = fw.settings.complete,
@@ -212,7 +213,7 @@
 			 * Parallel uploading technique
 			 */
 
-			if(fw.settings.parallel_upload) {
+			if(settings.parallel_upload) {
 				
 				var uploadFile = function(){
 						
@@ -220,8 +221,7 @@
 						 * check if there's still pending files
 						 */
 						if(files.length) {
-							var settings = $.extend({},fw.settings),
-								file = files.shift(),
+							var file = files.shift(),
 								fileUploader = null;
 
 								settings.data.append(fw.settings.paramName, file);
@@ -280,6 +280,8 @@
 
 								fileUploader =  new FileUploader(settings, fw.headers);
 								fw.addQueue(fileUploader);
+						} else {
+							settings.data.delete(settings.paramName);
 						}
 					};
 
@@ -298,15 +300,13 @@
 			 * single instance upload
 			 */
 			} else{
+				var paramName = files.length > 1 ? fw.settings.paramName + '[]' : fw.settings.paramName,
+					fileUploader = null;
 
 				for(var i in files){
-					var paramName = files.length > 1 ? fw.settings.paramName + '[]' : fw.settings.paramName;
-					fw.addData(paramName, files[i]);	
-
+					settings.data.append(paramName, files[i]);
 				}
 
-				var settings = $.extend({},fw.settings),
-					fileUploader = null;
 
 				/**
 				 * override complete event
@@ -314,29 +314,17 @@
 				 * then call the uploadFile in order to continue uploading
 				 */
 				settings.complete = function(response, e){
+
 					completeFn.call(fw, response, e);
 
 					/**
 					 * remove uploader from the queue
 					 */
 					 fw.removeQueue(fileUploader);
+					 settings.data.delete(paramName);
 
 				}
-				/**
-				 * override user's success event listener
-				 * inorder to remove a file from the list
-				 */
-
-				settings.success = function(response, e){
-					successFn.call(response, e);
-
-					/**
-					 * Reset files
-					 */
-					files.splice(0, files.length);
-				}
-
-
+				
 
 				/**
 				 *
@@ -344,7 +332,7 @@
 				 */
 				 settings.beforeSubmit.call(fw, settings, files)
 
-				fileUploader = new FileUploader(fw.settings, fw.headers);
+				fileUploader = new FileUploader(settings, fw.headers);
 			}
 				
 			
