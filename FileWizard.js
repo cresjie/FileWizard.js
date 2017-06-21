@@ -68,7 +68,8 @@
 		autoSend: false,
 		acceptedFiles: ['jpg','jpeg','png','gif'],
 		maxSize: 5,
-		multipleFiles: true
+		multipleFiles: true,
+		file_limit: 99,
 		
 	};
 
@@ -127,13 +128,16 @@
 		 */
 		addFiles: function(files){
 			var fw = this; 
-			limit = fw.settings.multipleFiles ? files.length : (files.length ? 1 : 0),
+				loop = fw.settings.multipleFiles ? files.length : (files.length ? 1 : 0),
+				remaining = fw.settings.file_limit - fw.files.length;
 				addedFiles = [];
+
+			loop = remaining < loop ? remaining : loop ; 
 
 			/**
 			 * Loop each files for checking
 			 */
-			for(var i =0 ; i < limit ; i++ ){
+			for(var i =0 ; i < loop ; i++ ){
 
 				/**
 				 * validate for filesize
@@ -154,6 +158,8 @@
 						return fw.settings.rejected.call(this, files[i],'file_type');
 					}
 				}
+
+
 
 				/**
 				 * if the multiple files allowed then just push directly
