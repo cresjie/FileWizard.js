@@ -35,8 +35,8 @@
 		dragleave: fn,
 		rejected: function(file, error){
 			switch(error) {
-				case 'file_limit':
-					alert('File exceeds file limit');
+				case 'file_size':
+					alert('File exceeds file size');
 					break;
 
 				case 'file_type':
@@ -143,7 +143,7 @@
 				 * validate for filesize
 				 */
 				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   ){
-					return fw.settings.rejected.call(this, files[i],'file_limit')
+					return fw.settings.rejected.call(this, files[i],'file_size')
 				}
 
 				/**
