@@ -32,6 +32,9 @@ jQuery(document).ready(function(){
 		},
 		success: function(response, e, file){
 			file.$container.find('.progress').hide();
+		},
+		success: function(response){
+			console.log(response)
 		}
 	});
 

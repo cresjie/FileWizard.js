@@ -29,6 +29,8 @@
 	 * FileWizard Default Values
 	 */
 	FileWizard.DEFAULTS = {
+		data:{},
+
 		dragover: fn,
 		drop: fn,
 		dragenter:fn,
@@ -40,7 +42,7 @@
 					break;
 
 				case 'file_type':
-					alert('file type not allowed');
+					alert('File type not allowed');
 					break;	
 			}
 		},
@@ -52,6 +54,7 @@
 		complete: fn,
 		success: fn,
 		error: fn,
+		progress: fn,
 
 		fileAdded: fn,
 		filesAdded: fn,
@@ -69,7 +72,7 @@
 		acceptedFiles: ['jpg','jpeg','png','gif'],
 		maxSize: 5,
 		multipleFiles: true,
-		file_limit: 99,
+		file_limit: 99, //number of files to be stored in the variable files
 		
 	};
 
@@ -85,16 +88,14 @@
 		 * add http paramater to the request
 		 */
 		addData: function(key, value){
-			if( !this.settings.data || (this.settings.data && this.settings.data.constructor != FormData) )
-				this.settings.data = new FormData();
-
 			
 			if(key){
 				if(key.constructor == Object){
-					for(var i in key)
-						this.settings.data.append(i, key[i]);
-				}else	
-					this.settings.data.append(key, value)
+					
+					$.extend(this.settings.data, key)
+				} else {
+					this.settings.data[key] = value;
+				}
 			}
 			
 
@@ -140,13 +141,6 @@
 			for(var i =0 ; i < loop ; i++ ){
 
 				/**
-				 * validate for filesize
-				 */
-				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   ){
-					return fw.settings.rejected.call(this, files[i],'file_size')
-				}
-
-				/**
 				 * validate the file extension
 				 */
 				
@@ -159,6 +153,14 @@
 					}
 				}
 
+				/**
+				 * validate for filesize
+				 */
+				if( FileWizard.sizeToMB(files[i].size) > fw.settings.maxSize   ){
+					return fw.settings.rejected.call(this, files[i],'file_size')
+				}
+
+				
 
 
 				/**
@@ -230,7 +232,7 @@
 							var file = files.shift(),
 								fileUploader = null;
 
-								settings.data.append(fw.settings.paramName, file);
+								settings.data[fw.settings.paramName] =  file;
 
 								/**
 								 * override complete event
@@ -287,7 +289,7 @@
 								fileUploader =  new FileUploader(settings, fw.headers);
 								fw.addQueue(fileUploader);
 						} else {
-							settings.data.delete(settings.paramName);
+							delete settings.data[settings.paramName];
 						}
 					};
 
@@ -306,11 +308,10 @@
 			 * single instance upload
 			 */
 			} else{
-				var paramName = files.length > 1 ? fw.settings.paramName + '[]' : fw.settings.paramName,
-					fileUploader = null;
+				var fileUploader = null;
 
 				for(var i in files){
-					settings.data.append(paramName, files[i]);
+					settings.data[settings.paramName] =  files.length > 1 ? files : files[i];
 				}
 
 
@@ -327,8 +328,7 @@
 					 * remove uploader from the queue
 					 */
 					 fw.removeQueue(fileUploader);
-					 settings.data.delete(paramName);
-
+					 delete settings.data[settings.paramName]
 				}
 				
 
