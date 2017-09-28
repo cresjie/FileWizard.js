@@ -21,6 +21,7 @@
 		this.headers = $.extend({},FileWizard.HEADERS, headers);
 		this.files = [];
 		this.queue = [];
+		
 		this.init();
 		return this;
 	}
@@ -189,8 +190,16 @@
 		},
 		removeFile: function(i,range){
 			range = range ? range : 1;
-			var files = this.files.splice(i, range);
-			this.settings.fileRemoved.call(this, files);
+
+			if(i && i.constructor == File) {
+				i = this.files.indexOf(i);
+			}
+			
+			if(i > -1) {
+				var files = this.files.splice(i, range);
+				this.settings.fileRemoved.call(this, files);
+			}
+			
 			return this;
 		},
 		/**
