@@ -1,0 +1,78 @@
+body{
+	background: #f4f4f4;
+}
+.main-menu{
+	background: #fff;
+	
+}
+.main-menu .navbar{
+	margin-bottom: 0;
+}
+.box-equalizer{
+	padding-bottom: 100%;
+	position: relative;
+	overflow: hidden;
+}
+.img-equalizer{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	max-width: 100%;
+}
+.filewizard-uploader{
+	position: absolute;
+    border: 4px dashed #adadad;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    transition: all .5s ease;
+     color: #adadad;
+}
+.filewizard-uploader:hover{
+	background: #4db3cc;
+    color: #fff;
+    border: 4px dashed #fff;
+}
+.filewizard-uploader .image-icon{
+	font-size: 5em;
+}
+.filewizard-uploads li{
+	margin-bottom: 10px;
+}
+.image-wrapper{
+	background: #fff;
+    border-radius: 3px;
+    box-shadow: 1px 1px 5px #c7c7c7;
+}
+.filewizard-progress{
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(76, 176, 199, 0.51);
+}
+.uploader-inner{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+   
+}
+.filewizard-uploader h5{
+	font-size: 1em;
+    font-weight: bold;
+}
+
+.try-container{
+	background: #efefef;
+    padding: 20px 10px;
+}
+
+.mb20{
+	margin-bottom: 20px;
+}
