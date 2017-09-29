@@ -31,7 +31,8 @@ body{
     transition: all .5s ease;
      color: #adadad;
 }
-.filewizard-uploader:hover{
+.filewizard-uploader:hover,
+.filewizard-uploader.filewizard-dragover{
 	background: #4db3cc;
     color: #fff;
     border: 4px dashed #fff;
@@ -70,9 +71,38 @@ body{
 
 .try-container{
 	background: #efefef;
-    padding: 20px 10px;
+    padding: 120px 10px 20px 10px;
 }
+.profile-entry{
+	min-height: 250px;
+	background: url(../images/sample.jpg);
+	background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+}
+.profile-wrapper{
+	width: 200px;
+    height: 200px;
+    position: absolute;
+    bottom: -100px;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 1px 1px 5px #5a5656;
+}
+.profile-uploader{
+	position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px 5px;
+    background: rgba(0,0,0,.5);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 
 .mb20{
 	margin-bottom: 20px;
 }
+
