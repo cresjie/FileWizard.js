@@ -1,0 +1,8 @@
+{
+	"name": "cresjie/FileWiazard",
+    "description": "sample fileupload system",
+    "keywords": ["cresjie", "upload file", "js"],
+    "require": {
+        "intervention/image": "^2.4"
+    }
+}
