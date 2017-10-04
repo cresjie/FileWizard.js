@@ -1,7 +1,7 @@
 $(document).ready(function(){ 
 	
 	var fw1 = new FileWizard('#filewizard-uploader-1',{
-		url: 'upload.php',
+		url: 'https://filewizardjs.000webhostapp.com/upload.php',
 		fileAdded: function(file){
 			var $li = $('<li class="col-md-2 col-sm-4"><div class="image-wrapper"><div class="box-equalizer"><img class="img-equalizer"><div class="filewizard-progress"></div></div></div></li>'),
 				$lastLi = $('.filewizard-uploads li').last(),
@@ -59,7 +59,7 @@ $(document).ready(function(){
 	}
 
 	var profileUploader = new FileWizard('#profile-uploader',{
-		url: 'upload.php',
+		url: 'https://filewizardjs.000webhostapp.com/upload.php',
 		multipleFiles: false,
 		paramName: 'image',
 		fileAdded: function(file){
