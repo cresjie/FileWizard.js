@@ -4,9 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>FileWizard</title>
-
+    
+    <title>FileWizard.js | drag and drop upload files</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <meta property="og:title" content="FileWizard.js">
+    <meta property="og:locale" content="en_US">
+    <meta name="description" content="drag and drop upload files">
+    <meta property="og:description" content="drag and drop upload files">
+    <link rel="canonical" href="http://cresjie.github.io/FileWizard.js/">
+    <meta property="og:url" content="http://cresjie.github.io/FileWizard.js/">
+    <meta property="og:site_name" content="FileWizard.js">
+    <script type="application/ld+json">
+    {"name":"FileWizard.js","description":"drag and drop upload files","author":null,"@type":"WebSite","url":"http://cresjie.github.io/FileWizard.js/","image":null,"publisher":null,"headline":"FileWizard.js","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/3.0.0/cropper.min.css">
@@ -32,30 +41,26 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Project name</a>
+                    <a class="navbar-brand" href="http://cresjie.github.io/FileWizard.js/">FileWizard</a>
                   </div>
                   <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                      <li class="active"><a href="#">Home</a></li>
-                      <li><a href="#">About</a></li>
-                      <li><a href="#">Contact</a></li>
+                      <li class="active"><a href="#installation">Installation</a></li>
+                      <li><a href="#basic">Basic</a></li>
+                      <li><a href="#advance">Advance</a></li>
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Docs <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Action</a></li>
-                          <li><a href="#">Another action</a></li>
-                          <li><a href="#">Something else here</a></li>
-                          <li role="separator" class="divider"></li>
-                          <li class="dropdown-header">Nav header</li>
-                          <li><a href="#">Separated link</a></li>
-                          <li><a href="#">One more separated link</a></li>
+                          <li><a href="#docs-constructor">Constructor</a></li>
+                          <li><a href="#docs-options">Options</a></li>
+                          <li><a href="#docs-methods">Methods</a></li>
+                          
                         </ul>
                       </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                      <li class="active"><a href="./">Default <span class="sr-only">(current)</span></a></li>
-                      <li><a href="../navbar-static-top/">Static top</a></li>
-                      <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+                     
+                      <li><a href="https://github.com/cresjie/FileWizard.js">Github</a></li>
                     </ul>
                   </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
@@ -69,7 +74,7 @@
             <div class="profile-entry">
                 <div class="container">
                     <div class="profile-wrapper">
-                        <img class="profile-image img-responsive" src="images/profile.jpg">
+                        <img class="profile-image img-responsive" src="images/profile.jpg" alt="Cres Jie Labasano">
                         <div class="profile-uploader" id="profile-uploader">
                             Change Image
                         </div>
@@ -121,7 +126,7 @@
                   </div>
                 </div>
 
-                <h3>Installation</h3>
+                <h3 id="installation">Installation</h3>
                 <div class="panel panel-info">
                   <div class="panel-body">
                     bower install filewizard.js --save
@@ -131,14 +136,19 @@
                 <h3>Getting Started</h3>
                 <script src="https://gist.github.com/cresjie/d23c386dceba005fa1dc4ce362bd8043.js"></script>
 
-                <h3>The Basic</h3>
+                <h3 id="basic">The Basic</h3>
                 <script src="https://gist.github.com/cresjie/afaeb1e82b883c636740fb9d6da77cf6.js"></script>
                 <script src="https://gist.github.com/cresjie/7258404b3de1aadbce88ededfe34b345.js"></script>
+                
+                <h3 id="advance">Advance (Multiple/Auto-upload)</h3>
+                <script src="https://gist.github.com/cresjie/0b8e9ce78f6da402709e68bbed7c334a.js"></script>
+                <script src="https://gist.github.com/cresjie/ca4e9337be781562b76289798acbf4bb.js"></script>
+                <script src="https://gist.github.com/cresjie/1e4b46a43280fef888dc927841e136e5.js"></script>
                 
             </div>
 
             <div class="container">
-                <h3>Constructor</h3>
+                <h3 id="docs-constructor">Constructor</h3>
                 <strong>FileWizard(element, options, headers)</strong>
                 <ul>
                     <li>
@@ -152,7 +162,7 @@
                     </li>
                 </ul>
 
-                <h3>Options</h3>
+                <h3 id="docs-options">Options</h3>
                 <ul>
                     <li>
                         <h4><strong>url</strong> <small>String| required</small></h4>
@@ -252,7 +262,7 @@
                     </li>
                 </ul>
 
-                <h3>Methods</h3>
+                <h3 id="docs-methods">Methods</h3>
                 <ul>
                     <li>
                         <h4><strong>addData</strong> <small>Function(key, value) or Function(Object)</small></h4>
@@ -305,7 +315,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Change Profile</h4>
+            <h4 class="modal-title">FileWizard.js + <a href="https://github.com/fengyuanchen/cropper" rel="nofollow">Cropper.js</a> </h4>
           </div>
           <div class="modal-body">
                 <img class="profile-preview img-responsive" src="">
