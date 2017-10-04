@@ -7,7 +7,7 @@
 - **FileWizard-bundle.min.js** - is the compile minification of fileuploader and fileward, so you dont need to download the FileUploader.js
 
 # Demo
-    [Click here][3]
+   [Click here][3]
 
 # Installation via Bower
 ```{r, engine='bash', count_lines}
