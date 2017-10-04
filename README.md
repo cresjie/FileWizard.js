@@ -21,6 +21,20 @@ bower install filewizard.js --save
  - headers <sub>| Object</sub>
  
  # Options
+ - **url** <sub>String| required</sub>
+    - url to where to send the request
+- **method** <sub>String | default: POST</sub>
+   - http method to use in the request
+- **progress** <sub>Function(percent)</sub>
+    - event listener for progress event
+- **abort** <sub>Function</sub>
+    - triggers when the request is aborted
+- **success** <sub>Function(response, event)</sub>
+    - triggers when the request is success: status 200
+- **error** <sub>Function(response, event)</sub>
+    - triggers when error occur in the request
+- **complete** <sub>Function(response, event)</sub>
+    - triggers either the request is error or success
 - **dragover** <sub>Function</sub>
     - mouse event drag over the element
 - **drop** <sub>Function</sub>
@@ -35,10 +49,6 @@ bower install filewizard.js --save
     - trigger when file(s) is/are removed
 - **paramName** <sub>String| default: files</sub>
     - paramater name for the file
-- **url** <sub>String| required</sub>
-    - url to where to send the request
-- **method** <sub>String | default: POST</sub>
-   - http method to use in the request
 - **clickable** <sub>Boolean| default: true</sub>
     - opens window file browser if the element is clicked
 - **acceptedFiles** <sub>Array | default: ['jpg','jpeg','png','gif']</sub>
@@ -49,6 +59,9 @@ bower install filewizard.js --save
     - upload multiple file in one request
 - **beforeSubmit** <sub>Function(settings, Array|File file(s) )</sub>
     - triggers before the request is submitted
+- **submitted** <sub>Function(settings, Array|File file(s) )</sub>
+    - triggers after the request is submitted  
+
 - **see also FileUploader js** for additional options
 
 # Methods

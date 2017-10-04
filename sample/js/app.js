@@ -1,7 +1,7 @@
 $(document).ready(function(){ 
 	
 	var fw1 = new FileWizard('#filewizard-uploader-1',{
-		url: 'https://filewizardjs.000webhostapp.com/upload.php',
+		url: 'upload.php',
 		fileAdded: function(file){
 			var $li = $('<li class="col-md-2 col-sm-4"><div class="image-wrapper"><div class="box-equalizer"><img class="img-equalizer"><div class="filewizard-progress"></div></div></div></li>'),
 				$lastLi = $('.filewizard-uploads li').last(),
@@ -24,13 +24,19 @@ $(document).ready(function(){
 			
 
 		},
-		progress: function(percent, e, file){
+		submitted: function(settings, file){
 			/**
 			 * remove the file from the list
 			 * when it started to process the upload
 			 */
 			fw1.removeFile(file);
+			
+		},
+		progress: function(percent, e, file){
+			
 			file.$content.find('.filewizard-progress').css('left', percent.toFixed(2) + '%');
+		},
+		success: function(){
 		}
 	});
 
@@ -59,7 +65,7 @@ $(document).ready(function(){
 	}
 
 	var profileUploader = new FileWizard('#profile-uploader',{
-		url: 'https://filewizardjs.000webhostapp.com/upload.php',
+		url: 'upload.php',
 		multipleFiles: false,
 		paramName: 'image',
 		fileAdded: function(file){

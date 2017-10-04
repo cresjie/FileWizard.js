@@ -52,6 +52,7 @@
 		 * HTTP request events
 		 */
 		beforeSubmit: fn,
+		submitted: fn,
 		complete: fn,
 		success: fn,
 		error: fn,
@@ -297,6 +298,9 @@
 
 								fileUploader =  new FileUploader(settings, fw.headers);
 								fw.addQueue(fileUploader);
+
+								fw.settings.submitted.call(fw, settings, file);
+
 						} else {
 							delete settings.data[settings.paramName];
 						}
@@ -348,6 +352,8 @@
 				 settings.beforeSubmit.call(fw, settings, files)
 
 				fileUploader = new FileUploader(settings, fw.headers);
+
+				fw.settings.submitted.call(fw, settings, files);
 			}
 				
 			
