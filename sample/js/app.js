@@ -42,9 +42,16 @@ $(document).ready(function(){
 	var readyAndShowed = false;
 
 	function initCropper(){
+		/**
+		 * making sure the modal fadein animation is complete
+		 * and the image is already loaded
+		 * then thats the time that we're gonna init the cropper 
+		 */
 		if(readyAndShowed) {
 			$('.profile-preview').cropper({
 				aspectRatio: 1,
+				viewMode: 1,
+				zoomable: false
 			})
 		}
 
@@ -54,6 +61,7 @@ $(document).ready(function(){
 	var profileUploader = new FileWizard('#profile-uploader',{
 		url: 'upload.php',
 		multipleFiles: false,
+		paramName: 'image',
 		fileAdded: function(file){
 			$('#profile-modal').modal('show');
 
@@ -70,19 +78,32 @@ $(document).ready(function(){
 			filereader.readAsDataURL(file);
 		},
 		progress: function(percent){
-			
+			$('#profile-modal .progress-bar').width(percent.toFixed(2) + '%');
+		},
+		success: function(response){
+			if(response.success) {
+				$('.profile-entry .profile-image').attr('src', response.data);
+				$('#profile-modal').modal('hide');
+			}
 		}
 	});
 
 	$('#profile-modal').on('shown.bs.modal', initCropper)
 		.on('hide.bs.modal', function(){
 			$('.profile-preview').cropper('destroy');
-			$('#profile-modal .progress').hide().width(0);
+			$('#profile-modal .progress').hide().find('.progress-bar').width(0);
 			readyAndShowed = false;
 		});
 
 	$('#submit-profile').on('click', function(){
 		$('#profile-modal .progress').show();
+		
+		/**
+		 * send the filewizard image
+		 * pass additional http parameters to our request for the crop
+		 * http params: x,y, width, height
+		 */
+		profileUploader.send( $('.profile-preview').cropper('getData') )
 	})
 
 	

@@ -75,7 +75,7 @@ body{
 }
 .profile-entry{
 	min-height: 250px;
-	background: url(../images/sample.jpg);
+	background: url(../images/profile-cover.jpg);
 	background-size: cover;
     background-repeat: no-repeat;
     position: relative;
@@ -105,4 +105,5 @@ body{
 .mb20{
 	margin-bottom: 20px;
 }
+
 
