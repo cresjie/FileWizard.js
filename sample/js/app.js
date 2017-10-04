@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function(){ 
 	
 	var fw1 = new FileWizard('#filewizard-uploader-1',{
 		url: 'upload.php',
