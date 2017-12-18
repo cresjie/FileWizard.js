@@ -48,8 +48,10 @@
 
 		
 		if( !_options.data || ( _options.data && _options.data.constructor != FormData) ) {
+
 			_options.data = FileUploader.toFormData(_options.data);
 		}
+
 
 		//add events
 		
@@ -102,11 +104,12 @@
 	FileUploader.toFormData = function(key,value){
 		var formData = new FormData();
 		if(key){
-			if(key.constructor == String){
-				formData.append(key,value);
-			}
+			
 			if(key.constructor == Object){
 				FileUploader.appendFormdata(formData, key);
+			} else {
+				formData.append(key,value);
+
 			}
 		}
 		
@@ -118,6 +121,7 @@
 	    if (data && (data.constructor == Object || data.constructor == Array) ){
 	    	for(var index in data) {
 	    		if (name == ''){
+
 	                FileUploader.appendFormdata(formdata, data[index], index);
 	            } else {
 	                FileUploader.appendFormdata(formdata, data[index], name + '['+index+']');
@@ -125,8 +129,9 @@
 	    	}
 	       
 	    } else {
-	        formdata.append(name, data);
+	    	formdata.append(name, data == null || data == undefined ? '' : data);
 	    }
+
 	}
 	
 	FileUploader.extend = function(obj,obj2){

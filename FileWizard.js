@@ -21,7 +21,8 @@
 		this.headers = $.extend({},FileWizard.HEADERS, headers);
 		this.files = [];
 		this.queue = [];
-		
+		this._callbacks = {};
+
 		this.init();
 		return this;
 	}
@@ -51,16 +52,13 @@
 		/**
 		 * HTTP request events
 		 */
-		beforeSubmit: fn,
-		submitted: fn,
 		complete: fn,
 		success: fn,
 		error: fn,
 		progress: fn,
 
-		fileAdded: fn,
-		filesAdded: fn,
-		fileRemoved: fn,
+		
+		
 		paramName: 'files',
 		url:'',
 		method:'POST',
@@ -86,6 +84,27 @@
 
 	var methods = {
 
+		on: function(event, fn){
+			if( !this._callbacks[event] ) {
+				this._callbacks[event] = [];
+			}
+			this._callbacks[event].push(fn);
+			return this;
+		},
+
+		trigger: function(event){
+			if( this._callbacks[event] ) {
+				var args = Array.prototype.slice.call(arguments);
+					args.shift();
+					
+				this._callbacks[event].forEach(function(callback){
+					callback.apply(this, args);
+				})
+
+				
+			}
+			return this;
+		},
 		/**
 		 * add http paramater to the request
 		 */
@@ -120,9 +139,11 @@
 			this.input.value = null;
 
 			/**
-			 * Trigger fileRemoved
+			 * Trigger files_removed
+			 * pass all the remove files
 			 */
-			 this.settings.fileRemoved.call(this, files);
+			 
+			 this.trigger('files_removed', files);
 
 			return this;
 		},
@@ -181,11 +202,13 @@
 				
 				addedFiles.push(files[i]);
 
-				fw.settings.fileAdded.call(this, files[i]);
+				
+				fw.trigger('file_added', files[i]);
 				
 			}
 			
-			fw.settings.filesAdded.call(this, addedFiles);
+			
+			fw.trigger('files_added', addedFiles);
 
 			return this;
 		},
@@ -198,7 +221,7 @@
 			
 			if(i > -1) {
 				var files = this.files.splice(i, range);
-				this.settings.fileRemoved.call(this, files);
+				this.trigger('files_removed', files);
 			}
 			
 			return this;
@@ -292,14 +315,15 @@
 								
 								/**
 								 *
-								 * Trigger beforeSubmit event
+								 * Trigger before_submit event
 								 */
-								fw.settings.beforeSubmit.call(fw, settings, file);
+								fw.trigger('before_submit', settings, file);
 
 								fileUploader =  new FileUploader(settings, fw.headers);
 								fw.addQueue(fileUploader);
 
-								fw.settings.submitted.call(fw, settings, file);
+								
+								fw.trigger('submitted', settings, file);
 
 						} else {
 							delete settings.data[settings.paramName];
@@ -347,13 +371,14 @@
 
 				/**
 				 *
-				 * Trigger beforeSubmit event
+				 * Trigger before_submit event
 				 */
-				 settings.beforeSubmit.call(fw, settings, files)
+				 fw.trigger('before_submit', settings, files);
 
 				fileUploader = new FileUploader(settings, fw.headers);
 
-				fw.settings.submitted.call(fw, settings, files);
+				
+				fw.trigger('submitted', settings, files);
 			}
 				
 			

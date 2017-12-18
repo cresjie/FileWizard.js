@@ -2,28 +2,6 @@ $(document).ready(function(){
 	
 	var fw1 = new FileWizard('#filewizard-uploader-1',{
 		url: 'upload.php',
-		fileAdded: function(file){
-			var $li = $('<li class="col-md-2 col-sm-4"><div class="image-wrapper"><div class="box-equalizer"><img class="img-equalizer"><div class="filewizard-progress"></div></div></div></li>'),
-				$lastLi = $('.filewizard-uploads li').last(),
-				filereader = new FileReader;
-
-			filereader.onload = function(e) {
-
-				$li.find('.img-equalizer').attr('src', e.target.result);
-				$li.insertBefore($lastLi);
-
-				/**
-				 * automatically uploads
-				 */
-				fw1.send();
-				
-			}
-
-			file.$content = $li;
-			filereader.readAsDataURL(file);
-			
-
-		},
 		submitted: function(settings, file){
 			/**
 			 * remove the file from the list
@@ -38,6 +16,28 @@ $(document).ready(function(){
 		},
 		success: function(){
 		}
+	}).on('file_added', function(file){
+		
+		var $li = $('<li class="col-md-2 col-sm-4"><div class="image-wrapper"><div class="box-equalizer"><img class="img-equalizer"><div class="filewizard-progress"></div></div></div></li>'),
+			$lastLi = $('.filewizard-uploads li').last(),
+			filereader = new FileReader;
+
+		filereader.onload = function(e) {
+
+			$li.find('.img-equalizer').attr('src', e.target.result);
+			$li.insertBefore($lastLi);
+
+			/**
+			 * automatically uploads
+			 */
+			fw1.send();
+			
+		}
+
+		file.$content = $li;
+		filereader.readAsDataURL(file);
+		
+
 	});
 
 
